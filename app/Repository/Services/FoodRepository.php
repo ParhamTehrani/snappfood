@@ -14,7 +14,7 @@ class FoodRepository extends BaseRepository implements FoodRepositoryInterface
     protected $model;
     public function __construct(Food $model)
     {
-        parent::__construct($model);
+        $this->model = $model;
     }
 
     public function getAvailableFoods()

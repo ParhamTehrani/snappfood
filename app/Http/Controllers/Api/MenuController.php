@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\FoodListResource;
 use App\Models\Food;
 use App\Repository\Interfaces\FoodRepositoryInterface;
 use Carbon\Carbon;
@@ -19,7 +20,7 @@ class MenuController extends Controller
         if ($menu->count()){
             return response()->json([
                 'success' => true,
-                'data' => $menu
+                'data' => FoodListResource::collection($menu)
             ],200);
         }else{
             return response()->json([

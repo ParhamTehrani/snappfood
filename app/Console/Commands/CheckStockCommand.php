@@ -39,5 +39,6 @@ class CheckStockCommand extends Command
     public function handle()
     {
         $ingredient = Ingredient::where('stock', '<' ,1)->increment('stock',4);
+        var_dump($ingredient);
     }
 }

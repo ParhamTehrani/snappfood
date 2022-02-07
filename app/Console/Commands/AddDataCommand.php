@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Food;
 use App\Models\Ingredient;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class AddDataCommand extends Command
@@ -47,9 +48,12 @@ class AddDataCommand extends Command
                 'stock' => get_object_vars($ingredient)['stock'],
                 'expires_at' => get_object_vars($ingredient)['expires-at'],
                 'best_before' => get_object_vars($ingredient)['best-before'],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ];
         }
         Ingredient::insert($ingredientsData);
+        var_dump('ingredients created');
 
         $foods = json_decode(file_get_contents(public_path('/foods.json'),true));
         foreach ($foods->recipes as $food){
@@ -58,9 +62,10 @@ class AddDataCommand extends Command
             ]);
 
             $ingredientTitles = get_object_vars($food)['ingredients'];
-            $ingredientIds = Ingredient::whereIn('title',$ingredientTitles)->get()->pluck('id');
+            $ingredientIds = Ingredient::whereIn('title',$ingredientTitles)->pluck('id');
             $foodInstance->ingredients()->sync($ingredientIds);
         }
+        var_dump('foods created');
 
     }
 }
